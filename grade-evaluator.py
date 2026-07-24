@@ -56,7 +56,7 @@ def evaluate_grades(data):
     formative_marks = 0
     summative_marks = 0
 
-
+    failed_formative = []
 
     for assignment in data:
         score = assignment["score"]
@@ -76,11 +76,14 @@ def evaluate_grades(data):
             formative_weight += weight
             formative_marks += contribution
 
+            if score < 50:
+                failed_formative.append(assignment)
+
         elif group == "Summative":
             summative_weight += weight
             summative_marks += contribution
 
-    print("✓ All scores are valid.")
+    print("All scores are valid!")
 
     print(f"Total Weight: {total_weight}")
     print(f"Formative Weight: {formative_weight}")
@@ -98,7 +101,7 @@ def evaluate_grades(data):
         print("Error: Summative assignments must total 40.")
         return
 
-    print("✓ Weight validation passed.")
+    print("Weight validation passed!")
     print(f"\nFormative marks: {formative_marks:.2f}")
     print(f"Summative marks: {summative_marks:.2f}")
     print(f"Final Grade: {final_grade:.2f}%")
@@ -116,6 +119,33 @@ def evaluate_grades(data):
         print("Status: PASSED")
     else:
         print("Status: FAILED")
+
+    print("\nFailed Formative Assignments:")
+
+    for assignment in failed_formative:
+        print(
+                f"{assignment['assignment']} "
+                f"(Score: {assignment['score']}, Weight: {assignment['weight']})"
+                )
+
+    if len(failed_formative) == 0:
+        print("\nNo formative assignments require resubmission.")
+
+    else:
+        highest_weight = failed_formative[0]["weight"]
+
+        for assignment in failed_formative:
+            if assignment["weight"] > highest_weight:
+                highest_weight = assignment["weight"]
+
+    print("\nAssignment(s) eligible for resubmission:")
+
+    for assignment in failed_formative:
+        if assignment["weight"] == highest_weight:
+            print(
+                    f"- {assignment['assignment']} "
+                    f"(Score: {assignment['score']}, Weight: {assignment['weight']})"
+                    )
 
 if __name__ == "__main__":
     # 1. Load the data
