@@ -106,6 +106,17 @@ def evaluate_grades(data):
     gpa = (final_grade / 100) * 5.0
     print(f"GPA: {gpa:.2f}")
 
+    formative_percentage = (formative_marks / formative_weight) * 100
+    summative_percentage = (summative_marks / summative_weight) * 100
+
+    print(f"\nFormative Percentage: {formative_percentage:.2f}%")
+    print(f"Summative Percentage: {summative_percentage:.2f}%")
+
+    if formative_percentage >= 50 and summative_percentage >= 50:
+        print("Status: PASSED")
+    else:
+        print("Status: FAILED")
+
 if __name__ == "__main__":
     # 1. Load the data
     course_data = load_csv_data()
