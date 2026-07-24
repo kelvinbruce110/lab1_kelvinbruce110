@@ -51,12 +51,20 @@ def evaluate_grades(data):
     formative_weight = 0
     summative_weight = 0
 
+    final_grade = 0
+
+    formative_marks = 0
+    summative_marks = 0
+
 
 
     for assignment in data:
         score = assignment["score"]
         weight = assignment["weight"]
         group = assignment["group"]
+
+        contribution = (score * weight) / 100
+        final_grade += contribution
 
         if score < 0 or score > 100:
             print(f"Error: '{assignment['assignment']}' has an invalid score of {score}.")
@@ -66,9 +74,11 @@ def evaluate_grades(data):
 
         if group == "Formative":
             formative_weight += weight
+            formative_marks += contribution
 
         elif group == "Summative":
             summative_weight += weight
+            summative_marks += contribution
 
     print("✓ All scores are valid.")
 
@@ -89,7 +99,12 @@ def evaluate_grades(data):
         return
 
     print("✓ Weight validation passed.")
+    print(f"\nFormative marks: {formative_marks:.2f}")
+    print(f"Summative marks: {summative_marks:.2f}")
+    print(f"Final Grade: {final_grade:.2f}%")
 
+    gpa = (final_grade / 100) * 5.0
+    print(f"GPA: {gpa:.2f}")
 
 if __name__ == "__main__":
     # 1. Load the data
