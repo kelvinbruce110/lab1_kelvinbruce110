@@ -46,15 +46,49 @@ def evaluate_grades(data):
     # TODO: e) Check for failed formative assignments (< 50%)
     #          and determine which one(s) have the highest weight for resubmission.
     # TODO: f) Print the final decision (PASSED / FAILED) and resubmission options
+    
+    total_weight = 0
+    formative_weight = 0
+    summative_weight = 0
+
+
 
     for assignment in data:
         score = assignment["score"]
+        weight = assignment["weight"]
+        group = assignment["group"]
 
         if score < 0 or score > 100:
             print(f"Error: '{assignment['assignment']}' has an invalid score of {score}.")
             return
 
+        total_weight += weight
+
+        if group == "Formative":
+            formative_weight += weight
+
+        elif group == "Summative":
+            summative_weight += weight
+
     print("✓ All scores are valid.")
+
+    print(f"Total Weight: {total_weight}")
+    print(f"Formative Weight: {formative_weight}")
+    print(f"Summative Weight: {summative_weight}")
+
+    if total_weight != 100:
+        print("Error: Total assignment weight must equal 100.")
+        return
+
+    if formative_weight != 60:
+        print("Error: Formative assignments must total 60.")
+        return
+
+    if summative_weight != 40:
+        print("Error: Summative assignments must total 40.")
+        return
+
+    print("✓ Weight validation passed.")
 
 
 if __name__ == "__main__":
